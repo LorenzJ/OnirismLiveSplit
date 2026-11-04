@@ -15,10 +15,10 @@ public static class PhoneTriggerWatcher
     }
 }
 
-[HarmonyPatch(typeof(SceneLoaderSvc), nameof(SceneLoaderSvc.LoadLevel), [typeof(LevelConfig), typeof(bool), typeof(bool)])]
+[HarmonyPatch(typeof(SceneLoaderSvc), nameof(SceneLoaderSvc.LoadLevel), [typeof(LevelConfig), typeof(bool), typeof(bool), typeof(bool)])]
 public static class SceneSwitchPatch
 {
-    [HarmonyPrefix] public static void Prefix(SceneSwitcher scene) => GameEvents.NotifyExit(scene.sceneName);
+    [HarmonyPrefix] public static void Prefix(LevelConfig level) => GameEvents.NotifyExit(level.name);
 }
 
 /// <summary>
@@ -49,7 +49,7 @@ public static class PickupPatch
 /// <summary>
 /// WIP- Intended to trigger a split when a new Raggs Shop is added to the save file
 /// </summary>
-[HarmonyPatch(typeof(SaveManager), nameof(SaveManager.AddEvent), [typeof(SaveData), typeof(string)])]
+[HarmonyPatch(typeof(SaveManager), nameof(SaveManager.AddEvent), [typeof(string)])]
 public static class ShopPatch
 {
     [HarmonyPrefix]
