@@ -98,16 +98,15 @@ public class LiveSplitManager : IDisposable
     //static TimeSpan cooldown = new(0, 0, cooldownSeconds);
     //TimeSpan? lastSplit;
 
-    void HandleCutsceneStart(Cutscene _)
+    void HandleCutsceneStart(Cutscene cutscene)
     {
-        Log.Debug("LiveSplitManager.HandleCutsceneStart()");
+        Log.Debug($"{nameof(LiveSplitManager.HandleCutsceneStart)}({cutscene.name})");
         if (PauseOn.Cutscene) client.Pause();
     }
 
-    void HandleCutsceneEnd(Cutscene _)
+    void HandleCutsceneEnd(Cutscene cutscene)
     {
-        Log.Debug($"Cutscene end: {_.eventName}");
-        Log.Debug("LiveSplitManager.HandleCutsceneEnd()");
+        Log.Debug($"{nameof(LiveSplitManager.HandleCutsceneEnd)}({cutscene.name})");
         if (PauseOn.Cutscene) client.Resume();
     }
 
@@ -117,11 +116,12 @@ public class LiveSplitManager : IDisposable
     /// <param name="sceneName">The name of the loaded scene.</param>
     void HandleSceneLoaded(string sceneName)
     {
+        Log.Debug($"{nameof(HandleSceneLoaded)}({sceneName})");
         switch (sceneName)
         {
             case "INTRO_CUTSCENES": break;// NewRun(); break;
-            case "Main_menu_new": break;
-            case "LoadingZone": break;
+            case SpecialScenes.MainMenu: break;
+            case SpecialScenes.LoadingZone: break;
             default: SceneChanged(); break;
         }
     }
@@ -132,8 +132,9 @@ public class LiveSplitManager : IDisposable
     /// <param name="sceneName"></param>
     void HandleSceneExit(string sceneName)
     {
-        if (sceneName == "Main_menu_new") return;
-        if (sceneName == "LoadingZone") return;
+        Log.Debug($"{nameof(HandleSceneExit)}({sceneName})");
+        if (sceneName == SpecialScenes.MainMenu) return;
+        if (sceneName == SpecialScenes.LoadingZone) return;
 
         if (PauseOn.Loading) client.Pause();
         GameEvents.NotifyEvent(new(EventType.SceneLoad, sceneName));
