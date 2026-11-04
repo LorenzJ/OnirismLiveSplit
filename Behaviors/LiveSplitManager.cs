@@ -47,7 +47,7 @@ public class LiveSplitManager : IDisposable
         Log.Debug($"HandleEvent({gameEvent}");
         //if (this.lastSplit is null) { Log.Error("last split time is in an invalid state."); return; }
         if (gameEvent.name.IsNullOrWhiteSpace()) { return; }
-        if (gameEvent.name == "Cutscene_Intro_New") { NewRun(); return; }
+        if (gameEvent.name == "Cutscene_intro_start") { NewRun(); return; }
 
         Log.Debug("Trying to split...");
         string liveSplitName = "";
