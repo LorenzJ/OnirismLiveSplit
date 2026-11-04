@@ -15,10 +15,10 @@ public static class PhoneTriggerWatcher
     }
 }
 
-[HarmonyPatch(typeof(SceneLoaderSvc), nameof(SceneLoaderSvc.LoadLevel), [typeof(SceneConfig), typeof(bool), typeof(bool)])]
+[HarmonyPatch(typeof(SceneLoaderSvc), nameof(SceneLoaderSvc.LoadLevel), [typeof(LevelConfig), typeof(bool), typeof(bool)])]
 public static class SceneSwitchPatch
 {
-    [HarmonyPrefix] public static void Prefix(SceneConfig scene) => GameEvents.NotifyExit(scene.sceneName);
+    [HarmonyPrefix] public static void Prefix(SceneSwitcher scene) => GameEvents.NotifyExit(scene.sceneName);
 }
 
 /// <summary>
@@ -39,11 +39,11 @@ public static class NPCTogglePatch
 /// <summary>
 /// WIP- Currently triggers on every type of pickup, including small pearls, which is probably not consistent enough to be useful.
 /// </summary>
-[HarmonyPatch(typeof(pickup), nameof(pickup.OnDestroy))]
+[HarmonyPatch(typeof(Pickup), nameof(Pickup.OnDestroy))]
 public static class PickupPatch
 {
     [HarmonyPrefix]
-    public static void Prefix(pickup __instance) { GameEvents.NotifyEvent(new(EventType.ItemCollection, __instance.name)); }
+    public static void Prefix(Pickup __instance) { GameEvents.NotifyEvent(new(EventType.ItemCollection, __instance.name)); }
 }
 
 /// <summary>
